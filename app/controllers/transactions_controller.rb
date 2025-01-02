@@ -1,10 +1,10 @@
 class TransactionsController < ApplicationController
   require "csv"
-  def upload
+  def index
     @transactions = Transaction.all
   end
 
-  def submit
+  def upload
     if params[:file].present?
       file = params[:file].tempfile
 
@@ -29,10 +29,10 @@ class TransactionsController < ApplicationController
       rescue CSV::MalformedCSVError => e
         flash[:alert] = "There was an error parsing the CSV file: #{e.message}"
       end
+        flash[:notice] = "#{transactions.size} transactions parsed successfully."
+      redirect_to upload_transactions_path
     else
       flash[:alert] = "Please choose a file to upload."
     end
-
-    redirect_to upload_transactions_path
   end
 end

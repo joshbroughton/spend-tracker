@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  get "transactions/upload", to: "transactions#upload",  as: :upload_transactions
-  post "transactions/submit", to: "transactions#submit", as: :submit_transactions
+  get "transactions", to: "transactions#index", as: :transactions
+  get "transactions/upload", to: "transactions#upload", as: :upload_transactions
+  post "transactions/upload", to: "transactions#upload", as: :submit_transactions
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

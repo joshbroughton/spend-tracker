@@ -2,7 +2,7 @@
   <h2>Transactions</h2>
   <%= form_with url: transactions_path, method: :get, local: true do |form| %>
     <%= form.label :category_id, "Filter by Category" %>
-    <%= form.collection_select :category_id, @categories, :id, :name, { include_blank: "All Categories" }, { selected: params[:category_id] } %>
+    <%= form.collection_select :category_id, @categories, :id, :name, { include_blank: "All Categories", selected: params[:category_id] } %>
     <%= form.submit "Filter" %>
   <% end %>
   <table>

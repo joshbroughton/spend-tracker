@@ -8,6 +8,7 @@
         <th>Description</th>
         <th>Amount</th>
         <th>Balance</th>
+        <th>Category</th>
       </tr>
     </thead>
     <tbody>
@@ -18,6 +19,11 @@
           <td><%= transaction[:description] %></td>
           <td><%= transaction[:amount] %></td>
           <td><%= transaction[:balance] %></td>
+          <td>
+            <%= turbo_frame_tag "transaction_#{transaction.id}_category" do %>
+                <%= link_to "#{transaction.category&.name || "Uncategorized"}", change_transaction_category_path(transaction), data: { turbo_frame: "transaction_#{transaction.id}_category" } %>
+            <% end %>
+            </td>
         </tr>
       <% end %>
     </tbody>

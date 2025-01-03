@@ -1,0 +1,3 @@
+<%= turbo_frame_tag "transaction_#{transaction.id}_category" do %>
+  <%= link_to "#{transaction.category&.name}", change_transaction_category_path(transaction), data: { turbo_frame: "transaction_#{transaction.id}_category" } %>
+<% end %>

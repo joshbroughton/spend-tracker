@@ -1,4 +1,5 @@
 class TransactionsController < ApplicationController
+  before_action :set_transaction, only: [ :update_category, :change_category ]
   require "csv"
   def index
     @transactions = Transaction.all
@@ -34,5 +35,31 @@ class TransactionsController < ApplicationController
     else
       flash[:alert] = "Please choose a file to upload."
     end
+  end
+
+  def change_category
+    @categories = Category.all
+    render partial: "category_form", locals: { transaction: @transaction }
+  end
+
+  def update_category
+    if @transaction.update(transaction_params)
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("transaction_#{@transaction.id}_category", partial: "transactions/category", locals: { transaction: @transaction }) }
+        format.html { redirect_to transactions_path, notice: "Transaction updated." }
+      end
+    else
+      render :edit
+    end
+  end
+
+  private
+
+  def set_transaction
+    @transaction = Transaction.find(params[:id])
+  end
+
+  def transaction_params
+    params.require(:transaction).permit(:amount, :category_id)
   end
 end

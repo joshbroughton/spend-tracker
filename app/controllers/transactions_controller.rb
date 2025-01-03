@@ -1,8 +1,16 @@
 class TransactionsController < ApplicationController
   before_action :set_transaction, only: [ :update_category, :change_category ]
   require "csv"
+
   def index
-    @transactions = Transaction.all
+    @categories = Category.all
+
+    # Filter transactions by category if a category_id is passed
+    if params[:category_id].present?
+      @transactions = Transaction.where(category_id: params[:category_id])
+    else
+      @transactions = Transaction.all
+    end
   end
 
   def upload

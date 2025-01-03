@@ -8,7 +8,9 @@
   <table>
     <thead>
       <tr>
-        <th>Date</th>
+        <th>
+          <%= link_to "Date", transactions_path(sort: "date", direction: toggle_direction(params[:direction])) %>
+        </th>
         <th>Transaction</th>
         <th>Description</th>
         <th>Amount</th>

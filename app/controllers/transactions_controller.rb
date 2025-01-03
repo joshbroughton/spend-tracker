@@ -4,12 +4,16 @@ class TransactionsController < ApplicationController
 
   def index
     @categories = Category.all
-    @category_id = params[:category_id]
+    # base query
+    @transactions = Transaction.all
+
     # Filter transactions by category if a category_id is passed
-    if @category_id.present?
-      @transactions = Transaction.where(category_id: @category_id)
-    else
-      @transactions = Transaction.all
+    if params[:category_id].present?
+      @transactions = @transactions.where(category_id: params[:category_id])
+    end
+
+    if params[:sort].present?
+      @transactions = @transactions.order("#{params[:sort]} #{params[:direction]}")
     end
   end
 

@@ -2,6 +2,7 @@ class Transaction < ApplicationRecord
   belongs_to :category
 
   before_validation :assign_category, on: :create
+  after_update :categorize_matches
 
   def uncategorized?
     category.name == "Uncategorized"
@@ -15,6 +16,11 @@ class Transaction < ApplicationRecord
     else
       self.category = Category.find_by(name: "Uncategorized")
     end
+  end
+
+  def categorize_matches
+    matches = Transaction.where(description: description)
+    matches.update_all(category_id: self.category.id)
   end
 
   def matching_category

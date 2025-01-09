@@ -1,7 +1,7 @@
 <%= turbo_frame_tag "transaction_#{transaction.id}_category" do %>
   <%= form_with model: transaction, url: update_transaction_category_path(transaction), method: :patch, data: { turbo_frame: "transaction_#{transaction.id}_category" } do |form| %>
     <%= form.label :category_id, "Select Category" %>
-    <%= form.collection_select :category_id, @categories, :id, :name, { include_blank: 'None' }, prompt: "Choose a Category" %>
+    <%= form.collection_select :category_id, @categories, :id, :name, prompt: "Choose a Category" %>
     <%= form.submit "Save" %>
   <% end %>
 <% end %>

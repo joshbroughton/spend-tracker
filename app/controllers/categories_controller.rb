@@ -51,6 +51,6 @@ class CategoriesController < ApplicationController
   end
 
   def uncategorize_transactions
-    Transaction.where(category_id: @category.id).update_all(category_id: nil)
+    Transaction.where(category_id: @category.id).update_all(category_id: 1)
   end
 end

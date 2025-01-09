@@ -32,11 +32,14 @@ class TransactionsController < ApplicationController
             transaction_type: row[:transaction],
             description: row[:description],
             amount: row[:amount].to_f,
-            balance: row[:balance].to_f
+            balance: row[:balance].to_f,
           }
         end
 
-        Transaction.insert_all!(transactions)
+        transactions.each do |transaction|
+          Transaction.create!(transaction
+          )
+        end
 
         flash[:notice] = "#{transactions.size} transactions parsed successfully."
       rescue CSV::MalformedCSVError => e

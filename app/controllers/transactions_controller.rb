@@ -26,14 +26,23 @@ class TransactionsController < ApplicationController
 
       begin
         CSV.foreach(file, headers: true, header_converters: :symbol) do |row|
-          # Parse each row into a hash with symbolized keys (e.g., :date, :transaction, etc.)
-          transactions << {
-            date: row[:date],
-            transaction_type: row[:transaction],
-            description: row[:description],
-            amount: row[:amount].to_f,
-            balance: row[:balance].to_f,
-          }
+          # Determine format based on available headers
+          if row.headers.include?(:transaction_date)
+            # Format 2: Transaction Date, Transaction, Name, Amount
+            date = Date.strptime(row[:transaction_date], "%m/%d/%Y").to_s
+            transactions << {
+              date: date,
+              description: row[:name],
+              amount: row[:amount].to_f
+            }
+          else
+            # Format 1: date, transaction, description, amount
+            transactions << {
+              date: row[:date],
+              description: row[:description],
+              amount: row[:amount].to_f
+            }
+          end
         end
 
         transactions.each do |transaction|
@@ -45,7 +54,7 @@ class TransactionsController < ApplicationController
       rescue CSV::MalformedCSVError => e
         flash[:alert] = "There was an error parsing the CSV file: #{e.message}"
       end
-        flash[:notice] = "#{transactions.size} transactions parsed successfully."
+
       redirect_to upload_transactions_path
     else
       flash[:alert] = "Please choose a file to upload."

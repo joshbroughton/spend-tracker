@@ -19,10 +19,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_08_232932) do
 
   create_table "transactions", force: :cascade do |t|
     t.date "date"
-    t.string "transaction_type"
     t.string "description"
     t.decimal "amount"
-    t.decimal "balance"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "category_id"
